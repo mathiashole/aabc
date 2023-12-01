@@ -1,0 +1,237 @@
+---
+date: "`r as.Date(Sys.time())`"
+format:
+  revealjs:
+    chalkboard: true
+    scrollable: true
+    theme: [serif, theme/styles.scss]
+    slide-number: c/t
+    logo: "https://www.rstudio.com/wp-content/uploads/2018/10/RStudio-Logo-Flat.png"
+    footer: "[https://github.com/mathiashole/aabc](https://github.com/mathiashole/aabc)"
+    code-copy: true
+    center-title-slide: false
+    include-in-header: heading-meta.html
+    code-link: true
+    code-overflow: wrap
+    highlight-style: github
+    height: 1080
+    width: 1920
+    link-external-newwindow: true
+execute: 
+  eval: true
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+# {transition="slide" transition-speed="slow" background-color="black"}
+
+:::{.title-center}
+`A`prendizaje `A`utomático `B`ásico para `C`ientíficos
+:::
+
+:::{.center}
+Edición 2023
+:::
+
+<br>
+<br>
+
+:::{.half-image}
+![](www/logo.png){fig-alt="icon iibce" fig-align="center" width="80%"}
+:::
+
+:::{.author}
+Mathias Mangino<br>
+Customer Success, RStudio<br>
+:::
+
+# Descripción {transition="slide" transition-speed="slow"}
+
+<br>
+
+. . .
+
+:::{.center}
+`¿Que es lo que hago y quien soy?`
+:::
+
+. . .
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+::: {.incremental}
+
+* Estudio
+  - Facultad de Ciencias | UDELAR (FCIEN)
+  - Desarrollo web
+  - Instituto Superior de Educacion Fisica | UDELAR (ISEF)
+* Trabajo
+  - Intedencia de Maldonado y Montevideo
+  - Facultad de Agronomía | UDELAR (FAGRO)
+
+:::
+
+:::
+
+::: {.column width="50%"}
+
+::: {.incremental}
+
+* Pierdo el tiempo y tomo cafe
+  - Bicicleta, caminatas y entrenamiento
+  - Lectura
+  - Cocinar cerveza artesanal
+  - Ver películas o series
+  
+:::
+  
+:::
+::::
+
+# Breve introduccion al tema {transition="slide" transition-speed="slow"}
+
+:::: {.columns}
+
+::: {.column width="70%"}
+
+::: {.incremental}
+
+- Retrotransposon Hot Spot (RHS) son una de las `familas multigenicas que codifican proteinas` en el genero `Trypanosomas`.
+
+- Los `Trypanosomas` son un genero de protistas. Estos incluyen especies `parásitas intracelulares` con un ciclo de vida que involucra `vertebrados e invertebrados`.
+
+- Existen múltiples RHS en `diferentes genomas de los tripanosomas`.
+
+- Las proteínas RHS se han investigado en la especie *T. brucei*  y se a visto que comparten una regiones de secuencias conservadas.
+
+- La familia de las RHS podría estar `involucrada` en la `modelización de la cromatina`, la `transcripción` y la `exportación de ARNm` en *T. brucei*.
+
+
+:::
+
+:::
+
+::: {.column width="30%"}
+![](www/try_pic.jpg){fig-alt="pic try" fig-align="rigth"}
+<br>(Kingwell, 2022)
+:::
+
+::::
+
+# Problema a resolver con `A`prendizaje `A`utomático {transition="slide" transition-speed="slow"}
+::: {.incremental}
+
+<br>
+
+- Evaluar la `frecuencia relativa de codones` en cada secuencia de las `RHS`.
+
+- Analizar la capacidad de la `frecuencia de codones` para `clasificar especies` de `Trypanosomas` mediante técnicas de `aprendizaje supervisado`.
+
+- `Agrupar` las secuencias de `RHS` dentro de cada especie en clusters, basándose en la `frecuencia de codones` mediante técnicas de `aprendizaje no supervisado`.
+
+
+:::
+
+# Obtencion de datos {transition="slide" transition-speed="slow"}
+
+<br>
+
+:::: {.columns}
+
+::: {.column width="60%"}
+
+::: {.incremental}
+
+- Los `datos iniciales` provienen de una `base de datos` pública llamada `TriTrypDB`  <https://tritrypdb.org/tritrypdb/app/>. TriTrypDB se centra en los patógenos de la `familia Tritrpanosomatida`. Proporciona acceso a `datos genómicos` y otros conjuntos de datos relacionados con estos patógenos.
+
+- Los `datos son procesados` por un programa que registra la `frecuencia relativa de codones`. Los codones se forman por `tripletes` consecutivos de nucleótidos de forma `no solapante`. Cada `aminoácido` en una `proteína` es `codificado` por `uno o varios codones diferentes`.
+
+:::
+
+:::
+::: {.column width="40%"}
+
+```{bash, eval=FALSE}
+#| message: false
+#| warning: false
+#| code-fold: true
+#| echo: true
+
+>TCDM_12384  | Trypanosoma cruzi Dm28c 2014 | retrotransposon hot spot (RHS) protein | genomic | AYLP01000558 reverse | (geneStart+0 to geneEnd+0)| length=765
+ATGGAAGGACTTTTGCTGATATCCCCCTACCTCGAACGTAAAACATTGTCCAAGATGGAA
+AGTGAAATGAAGCGGACGGATTTTATTTTTCTTGTATTGAGTATATGGGATTATGTCATT
+CCACATCTTCTTGAAAAGTGTGCCGTATCTGCATTTTTGAATGAGGATTTCCTGCGTGCG
+ATAAGAACTAAAATTGAGGAACTGAAGCTAACAGGACGACCTGAGGCACACAGCTGTGCG
+CTGAAAAAGCATTCGAACAAAAGATTAATCAGAAAAAAGCTTTTAAAAGTA
+>TcCLB.509663.50  | Trypanosoma cruzi CL Brener Non-Esmeraldo-like | trans-sialidase, Group VIII, putative | genomic | TcChr12-P reverse | (geneStart+0 to gen
+eEnd+0)| length=3129
+ATGCTCTCACGTGTTGCTGCAGTGAAGGCACCCCGCACACACAACCGTCGCCGCGTGACC
+GGATCCAGCGGAAGGAGGAGGGAAGGAAGAGAGAGTGAGCCGCAGAGGCTCAACATGTCC
+CGGCATGTGTTTGATTCTGCGGTGCTGCTCCTCGTTGTGATGATGTGCTGCGGCACCTGT
+GGAGCTGCGGCTGCTGAGGGCAGTATTCCAGGGAATGCCATTGATCCGTTCACAGTGACG
+ACGCCGGTATCATTTGCTAATTGGAAGGAGTTTAAGGACGGAAGCAAAATCACCTCGCTC
+
+
+```
+
+
+```{bash, eval=FALSE}
+#| message: false
+#| warning: false
+#| code-fold: true
+#| echo: true
+
+codon	TGA	TAG	TAA	GCT	GCC	GCG	GCA	TGC	TGT	GAT	GAC	GAA	GAG	TTC	TTT	GGG	GGC	GGT	GGA	CAC	CAT	ATA	ATT	ATC	AAG	AAA	CTT	CTC	TTA	CTG	TTG	CTA	ATG	AAC	AAT	CCG	CCC	CCT	CCA	CAA	CAG	AGA	CGT	CGC	CGG	AGG	CGA	TCA	AGT	AGC	TCT	TCC	TCG	ACA	ACC	ACG	ACT	GTG	GTC	GTT	GTA	TGG	TAT	TAC
+>TCDM_12384  | Trypanosoma cruzi Dm28c 2014 | retrotransposon hot spot (RHS) protein | genomic | AYLP01000558 reverse | (geneStart+0 to geneEnd+0)| length=765
+	0.392	0.000	0.000	0.784	1.569	1.569	0.000	0.000	1.176	2.353	3.137	4.314	3.529	1.569	3.137	1.569	0.784	1.176	0.7841.176	1.569	2.745	1.176	1.961	6.275	5.098	0.392	0.392	3.137	1.569	1.569	2.353	2.353	2.353	2.353	0.784	1.569	1.961	0.7840.392	1.961	1.569	0.000	1.569	0.392	0.784	1.176	1.176	0.784	0.784	1.176	1.176	0.784	0.784	1.176	1.176	1.569	1.961	0.3922.353	0.392	2.353	1.176	1.961	
+>TcCLB.509663.50  | Trypanosoma cruzi CL Brener Non-Esmeraldo-like | trans-sialidase, Group VIII, putative | genomic | TcChr12-P reverse | (geneStart+0 to gen
+eEnd+0)| length=3129	0.000	0.000	0.096	1.151	1.822	2.205	1.918	0.767	0.575	3.643	2.972	3.356	4.794	0.671	1.726	2.685	2.6852.013	2.013	0.767	0.959	0.384	0.767	1.342	1.918	2.780	0.192	1.822	1.822	1.438	0.288	2.013	2.397	2.109	2.876	1.534	0.5751.151	1.151	0.959	1.630	0.575	1.246	0.384	0.575	0.671	1.055	2.109	1.342	1.726	1.630	1.055	1.534	2.013	2.493	2.205	1.7260.671	0.959	4.027	2.205	1.534	1.246	1.055	
+>TCDM_02307  | Trypanosoma cruzi Dm28c 2014 | trans-sialidase | genomic | AYLP01000015 forward | (geneStart+0 to geneEnd+0)| length=1242	0.000	0.0000.242	2.657	1.449	2.174	1.691	0.725	0.242	0.966	3.140	3.140	4.348	1.449	0.966	3.623	2.657	3.140	2.174	1.208	1.208	0.0000.725	1.208	1.691	1.932	0.242	0.966	3.382	1.208	0.242	1.932	1.691	3.140	4.106	1.449	0.483	1.208	1.449	0.725	3.382	0.4830.483	0.242	0.725	0.242	0.242	2.899	1.208	0.966	2.174	1.691	2.657	1.208	1.449	3.140	1.449	0.966	1.208	4.106	1.208	1.4491.449	0.000	
+
+
+
+```
+
+:::
+
+::::
+
+## Metodología de `A`prendizaje `A`utomático y qué espero {transition="slide" transition-speed="slow"}
+
+
+![](www/DAG.png){fig-alt="phy ber" fig-align="center"}
+
+# {background-color="black"}
+
+:::{.title-center}
+`Gracias!`
+:::
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+- [quarto.org](https://quarto.org/)  
+
+code at <https://github.com/mathiashole/aabc>
+
+:::{.author}
+Mathias Mangino<br>
+Customer Success, RStudio<br>
+:::
+
+```{r}
+#| message: false
+#| warning: false
+#| code-fold: true
+#| echo: true
+
+
+
+```
+
