@@ -53,7 +53,7 @@ Customer Success, RStudio<br>
 . . .
 
 :::{.center}
-`¿Que es lo que hago y quien soy?`
+`¿Que es lo que hago?`
 :::
 
 . . .
